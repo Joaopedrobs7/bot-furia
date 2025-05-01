@@ -1,0 +1,32 @@
+{
+    "jogos": [
+        {
+            "data": "10:00",
+            "time1": "Sashi",
+            "time2": "ECLOT",
+            "link": "https://www.hltv.org/matches/2381986/eclot-vs-sashi-yalla-compass-2025-contenders-1-closed-qualifier",
+            "thread_id": 153
+        },
+        {
+            "data": "19:00",
+            "time1": "Sashi",
+            "time2": "RAGE",
+            "link": "https://www.hltv.org/matches/2382138/rage-vs-sashi-cct-season-3-europe-series-1-closed-qualifier",
+            "thread_id": 156
+        },
+        {
+            "data": "02/05/2025",
+            "time1": "Sashi",
+            "time2": "CYBERSHOKE",
+            "link": "https://www.hltv.org/matches/2381973/cybershoke-vs-sashi-thunderpick-world-championship-2025-european-series-1",
+            "thread_id": 159
+        },
+        {
+            "data": "05/05/2025",
+            "time1": "Sashi",
+            "time2": "Nexus",
+            "link": "https://www.hltv.org/matches/2382064/nexus-vs-sashi-tipsport-conquest-of-prague-2025",
+            "thread_id": 162
+        }
+    ]
+}
