@@ -1,17 +1,17 @@
 import telebot
+import os
 from telebot import types
 import time
-import os
-from dotenv import load_dotenv
+import settings
 from scrape import get_matches
-load_dotenv()
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
 
-api_key = os.getenv('API_KEY')
+api_key = settings.api_key
 bot = telebot.TeleBot(api_key)
-chat_id = -1002271878708
-logs_thread_id = 70
+logs_thread_id = 70 # TOPICO QUE VAI MANDAR OS LOGS
 
 def iniciar_bot():
     #comandos do menu
@@ -64,7 +64,7 @@ def iniciar_bot():
     bot.infinity_polling()
 
 
-def criar_topicos(url,chat_id):
+def criar_topicos(url,chat_id,time_in_seconds):
     while True:
         print('Procurando Jogos...')
         jogos = get_matches(url)
@@ -89,7 +89,7 @@ def criar_topicos(url,chat_id):
             bot.send_message(chat_id=chat_id, message_thread_id=logs_thread_id, text=log)
 
         #espera 24h para checar dnv
-        time.sleep(86400)
+        time.sleep(time_in_seconds)
 
 def check_duplicates(jogos):
     # aqui eu abro o json e pego os links existentes
