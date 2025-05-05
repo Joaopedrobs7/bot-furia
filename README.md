@@ -10,6 +10,7 @@ Um bot em Python que monitora a página da HLTV de um time (ex: FURIA) e envia a
 - Detecta novas partidas automaticamente.
 - Envia mensagens para um grupo ou canal no Telegram.
 - 100% automatizado e personalizável.
+- Remove automaticamente as partidas que já aconteceram, excluindo a thread correspondente e limpando os dados armazenados.
 
 ---
 
@@ -62,7 +63,7 @@ O projeto é dividido em vários arquivos, cada um com uma função específica.
 
 ### 1. `scrape.py`
 
-Este arquivo é responsável por **extrair as informações das próximas partidas** do time escolhido diretamente da página do HLTV. Utilizando a biblioteca `BeautifulSoup`, ele faz o web scraping da tabela de partidas e coleta os dados como:
+Este arquivo é responsável por **extrair as informações das próximas partidas** do time escolhido diretamente da página do HLTV. Utilizando a biblioteca `cloudscraper`, ele faz o web scraping da tabela de partidas e coleta os dados como:
 
 - Data do jogo
 - Times que irão jogar
@@ -74,17 +75,18 @@ Essas informações são então retornadas para serem utilizadas na criação de
 
 Aqui ficam definidos **os handlers do bot e a checagem de duplicidade de tópicos**. O arquivo contém:
 
-- Configuração do bot com o `python-telegram-bot`.
+- Configuração do bot com o `telebot`.
 - Definição de comandos e interações (como o comando `/start` e botões de interação).
 - Verificação de partidas duplicadas, evitando que o bot crie tópicos repetidos no grupo.
 - Criação de tópicos no Telegram sobre as próximas partidas e o envio de mensagens com detalhes dos jogos.
+- Delecao de Partidas que Ja ocorreram
 
 ### 3. `main.py`
 
 Este é o arquivo que **executa o bot**. Quando o bot é iniciado, este script:
 
 - Inicia o bot que responde a mensagens privadas (`iniciar_bot`).
-- Inicia o bot que verifica e cria os tópicos sobre os jogos no grupo de Telegram, utilizando o intervalo de tempo configurado em `settings.py`.
+- Inicia o bot que gerencia os tópicos sobre os jogos no grupo do Telegram, utilizando o intervalo de tempo configurado em `settings.py`.
 - Ele mantém os dois processos rodando simultaneamente para garantir que o bot fique ativo o tempo todo.
 
 ### 4. `settings.py`
@@ -98,15 +100,15 @@ Aqui ficam as **configurações do bot**, como:
 
 ### 5. `jogos.json`
 
-Este arquivo é utilizado para **armazenar as informações sobre os tópicos já criados**. Quando o bot encontra uma nova partida, ele cria um tópico no Telegram e registra o link do jogo e o `thread_id` do tópico no arquivo `jogos.json`. Isso permite que o bot identifique partidas duplicadas ao verificar os jogos passados e evita criar tópicos repetidos.
+Este arquivo é utilizado para **armazenar as informações sobre os tópicos já criados**. Quando o bot encontra uma nova partida, ele cria um tópico no Telegram e registra o link do jogo e o `thread_id` do tópico no arquivo `jogos.json`. Além de evitar a criação de tópicos duplicados, o bot também verifica regularmente se alguma partida já ocorreu. Se a data do jogo for anterior à data atual, o bot remove automaticamente o tópico correspondente no Telegram e atualiza o jogos.json, mantendo o arquivo sempre limpo e atualizado.
 
 ```json
 {
   "jogos": [
     {
-      "data": "2025-05-05",
+      "data": "05/05/2025",
       "time1": "FURIA",
-      "time2": "Team X",
+      "time2": "MIBR",
       "link": "https://www.hltv.org/matches/123456",
       "thread_id": 987654
     }
