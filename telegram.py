@@ -1,11 +1,11 @@
 import telebot
-import os
 from telebot import types
 import time
 import settings
 from scrape import get_matches
 import json
 from dotenv import load_dotenv
+from datetime import datetime
 load_dotenv()
 
 
@@ -66,13 +66,20 @@ def iniciar_bot():
 
 def criar_topicos(url,chat_id,time_in_seconds):
     while True:
+        print('Procurando Jogos Para remover...')
+        delete_past_games()
+
         print('Procurando Jogos...')
         jogos = get_matches(url)
         jogos = check_duplicates(jogos)
 
+
         if jogos:
             for row in jogos:
-                topic_name = f"{row['time1']} x {row['time2']} {row['data'] + ' utc'}"
+                if len(row['data']) == 5: #Tratar jogos que tem apenas o horario
+                    row['data'] = datetime.today().strftime('%d/%m/%Y')
+
+                topic_name = f"{row['time1']} x {row['time2']} {row['data']}"
                 game_info = f"Para mais informacoes acesse: {row['link']}"
                 topic = bot.create_forum_topic(chat_id=chat_id, name=topic_name)
                 #salvando thread id para cada topico para posteriormente deletar
@@ -84,8 +91,8 @@ def criar_topicos(url,chat_id,time_in_seconds):
                 print(topic_name)
             save_jogos(jogos)
         else:
-            print("sem jogos novos para add")
-            log = "Sem jogos para adicionar"
+            print("Nenhum Jogo a ser adicionado")
+            log = "Nenhum Jogo a ser adicionado"
             bot.send_message(chat_id=chat_id, message_thread_id=logs_thread_id, text=log)
 
         #espera 24h para checar dnv
@@ -116,6 +123,44 @@ def save_jogos(jogos_novos):
         data['jogos'].extend(jogos_novos)
         json.dump(data, file, indent=4, ensure_ascii=False, )
 
+
+def delete_past_games():
+    data_atual = datetime.today().date() #Pegar apenas ano/mes/dia
+    #data_atual = datetime.strptime("10/05/2025",'%d/%m/%Y').date() #MOCK PARA TESTE
+
+    #open json
+    with open('jogos.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    jogos_ativos = []
+    removidos = 0
+
+    for row in data['jogos']:
+        data_jogo = datetime.strptime(row['data'],'%d/%m/%Y').date()
+        if data_atual > data_jogo:
+            #deletar topico
+            row_thread_id = row['thread_id']
+            bot.delete_forum_topic(chat_id=settings.chat_id,message_thread_id=row_thread_id)
+            log = f"Thread Deletado {row['time1']} x {row['time2']} {row['data']}"
+            bot.send_message(chat_id=settings.chat_id,message_thread_id=logs_thread_id,text=log)
+            print(log)
+            removidos += 1
+
+        else:
+            #remover do data
+            jogos_ativos.append(row)
+
+
+    data['jogos'] = jogos_ativos
+
+    #salva no json
+    if data['jogos']:
+        with open('jogos.json', 'w', encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
+    if removidos == 0:
+        log = "Nenhum Jogo a ser removido"
+        bot.send_message(chat_id=settings.chat_id,message_thread_id=logs_thread_id,text=log)
+        print("Nenhum Jogo a ser removido")
 
 
 

@@ -1,7 +1,6 @@
 import time
-import os
 from threading import Thread
-from telegram import iniciar_bot
+from telegram import iniciar_bot, delete_past_games
 from telegram import criar_topicos
 import settings
 
@@ -14,7 +13,14 @@ time.sleep(5)# tempo pra ligar o bot deboas
 Thread(target=criar_topicos,args=(settings.url,settings.chat_id,settings.time_in_seconds)).start()
 
 #todo
-#implementar um json que guarda a data do jogo e o thread-id, assim quando ja tiver acontecido o game eu deleto
+#converter jogos de horario para data ok
+#entender logica do datetime ok
+#create delete topics logic ok
+#teste
+#delete_past_games() #ok
+
+
+
 
 
 
