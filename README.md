@@ -34,7 +34,7 @@ api_key = "SEU_TOKEN_DO_BOT"
 # ID do grupo onde os tópicos serão criados
 chat_id = -1001234567890
 
-# URL da página HLTV do time a ser monitorado
+# URL da pagina do hltv na sessao de *Matches* do time a ser monitorado (ex: https://www.hltv.org/team/8297/furia#tab-matchesBox)
 url = "https://www.hltv.org/team/8297/furia#tab-matchesBox"
 
 # Tempo de intervalo entre verificações (em segundos)
