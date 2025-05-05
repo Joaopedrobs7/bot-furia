@@ -32,7 +32,7 @@ def iniciar_bot():
         caption = (
             "fala galera, fallenzao aqui\n\n"
             "Quer trocar uma ideia com a galera? Clica em 👉 Grupo pra entrar no chat da FURIA! 🔥\n\n"
-            "E se quiser saber quem foi o dev lazarento que fez essa parada aqui, clica em 👉 Sobre! 😂\n\n"
+            "E se quiser saber quem foi o dev que fez essa parada aqui, clica em 👉 Sobre! 😂\n\n"
             "Tamo junto, GLHF! 🎯"
         )
 
@@ -72,8 +72,8 @@ def criar_topicos(url,chat_id,time_in_seconds):
 
         if jogos:
             for row in jogos:
-                topic_name = f'{row['time1']} x {row['time2']} {row['data'] + ' utc'}'
-                game_info = f'Para mais informacoes acesse: {row['link']}'
+                topic_name = f"{row['time1']} x {row['time2']} {row['data'] + ' utc'}"
+                game_info = f"Para mais informacoes acesse: {row['link']}"
                 topic = bot.create_forum_topic(chat_id=chat_id, name=topic_name)
                 #salvando thread id para cada topico para posteriormente deletar
                 row['thread_id'] = topic.message_thread_id

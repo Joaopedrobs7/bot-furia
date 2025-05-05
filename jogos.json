@@ -1,60 +1,11 @@
 {
     "jogos": [
         {
-            "data": "10:00",
-            "time1": "Sashi",
-            "time2": "ECLOT",
-            "link": "https://www.hltv.org/matches/2381986/eclot-vs-sashi-yalla-compass-2025-contenders-1-closed-qualifier",
-            "thread_id": 153
-        },
-        {
-            "data": "19:00",
-            "time1": "Sashi",
-            "time2": "RAGE",
-            "link": "https://www.hltv.org/matches/2382138/rage-vs-sashi-cct-season-3-europe-series-1-closed-qualifier",
-            "thread_id": 156
-        },
-        {
-            "data": "02/05/2025",
-            "time1": "Sashi",
-            "time2": "CYBERSHOKE",
-            "link": "https://www.hltv.org/matches/2381973/cybershoke-vs-sashi-thunderpick-world-championship-2025-european-series-1",
-            "thread_id": 159
-        },
-        {
-            "data": "05/05/2025",
-            "time1": "Sashi",
-            "time2": "Nexus",
-            "link": "https://www.hltv.org/matches/2382064/nexus-vs-sashi-tipsport-conquest-of-prague-2025",
-            "thread_id": 162
-        },
-        {
-            "data": "10:00",
-            "time1": "Sashi",
-            "time2": "NAVI Junior",
-            "link": "https://www.hltv.org/matches/2382087/navi-junior-vs-sashi-thunderpick-world-championship-2025-european-series-1",
-            "thread_id": 168
-        },
-        {
-            "data": "13:00",
-            "time1": "Sashi",
-            "time2": "Zero Tenacity",
-            "link": "https://www.hltv.org/matches/2382149/sashi-vs-zero-tenacity-cct-season-3-europe-series-1-closed-qualifier",
-            "thread_id": 171
-        },
-        {
-            "data": "06/05/2025",
-            "time1": "Sashi",
-            "time2": "UNiTY",
-            "link": "https://www.hltv.org/matches/2382164/sashi-vs-unity-yalla-compass-2025-contenders-1-closed-qualifier",
-            "thread_id": 174
-        },
-        {
-            "data": "07/05/2025",
-            "time1": "Sashi",
-            "time2": "SPARTA",
-            "link": "https://www.hltv.org/matches/2382258/sashi-vs-sparta-ygames-pro-series-season-5",
-            "thread_id": 177
+            "data": "10/05/2025",
+            "time1": "FURIA",
+            "time2": "The MongolZ",
+            "link": "https://www.hltv.org/matches/2382203/the-mongolz-vs-furia-pgl-astana-2025",
+            "thread_id": 182
         }
     ]
 }
