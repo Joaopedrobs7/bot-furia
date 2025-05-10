@@ -1,62 +1,3 @@
-# import time
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
-#
-#
-# def get_matches(url):
-#
-#     driver = webdriver.Chrome()
-#     driver.get(url)
-#
-#     time.sleep(5)
-#
-#     partidas = driver.find_element(By.CLASS_NAME, 'match-table')
-#     tbodies = partidas.find_elements(By.TAG_NAME, 'tbody')
-#
-#     jogos = []
-#
-#     for tbody in tbodies:
-#         try:
-#             # Data
-#             data_element = tbody.find_element(By.CLASS_NAME, 'date-cell').find_element(By.TAG_NAME, 'span')
-#             data = data_element.text
-#
-#             # Times
-#             time1 = tbody.find_element(By.CLASS_NAME, 'team-1').text
-#             time2 = tbody.find_element(By.CLASS_NAME, 'team-2').text
-#
-#             # Link para a página do jogo
-#             match_link_element = tbody.find_element(By.CLASS_NAME, 'matchpage-button')
-#             match_link = match_link_element.get_attribute('href')
-#
-#
-#             jogos.append({
-#                 'data': data,
-#                 'time1': time1,
-#                 'time2': time2,
-#                 'link': match_link
-#             })
-#         except Exception as e:
-#             print(f"Erro ao processar uma partida: {e}")
-#
-#     # # Mostrar os jogos extraídos
-#     # for jogo in jogos:
-#     #     print(jogo)
-#
-#     driver.quit()
-#     return jogos
-#
-# # Teste
-# url = 'https://www.hltv.org/team/11712/sashi#tab-matchesBox'
-# jogos = get_matches(url)
-#
-# # Exibir resultados
-# for jogo in jogos:
-#     print(jogo)
-
-
-#####################
-
 from bs4 import BeautifulSoup
 import cloudscraper
 
@@ -106,10 +47,4 @@ def get_matches(url):
     print(jogos)
     return jogos
 
-# # Teste
-# url = 'https://www.hltv.org/team/11712/sashi#tab-matchesBox'
-# jogos = get_matches(url)
-#
-# # Exibir resultados
-# for jogo in jogos:
-#     print(jogo)
+

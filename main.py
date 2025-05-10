@@ -1,6 +1,6 @@
 import time
 from threading import Thread
-from telegram import iniciar_bot, delete_past_games
+from telegram import iniciar_bot
 from telegram import criar_topicos
 import settings
 

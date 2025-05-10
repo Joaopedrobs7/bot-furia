@@ -66,29 +66,30 @@ def iniciar_bot():
 
 def criar_topicos(url,chat_id,time_in_seconds):
     while True:
-        print('Procurando Jogos Para remover...')
-        delete_past_games()
-
         print('Procurando Jogos...')
         jogos = get_matches(url)
-        jogos = check_duplicates(jogos)
+        print('Procurando Jogos Para remover...')
+        check_active_games(jogos)
+        jogos = search_new_games(jogos)
 
 
         if jogos:
             for row in jogos:
-                if len(row['data']) == 5: #Tratar jogos que tem apenas o horario
-                    row['data'] = datetime.today().strftime('%d/%m/%Y')
+                if row['time2'] != 'Time 2': #Verificar tbd
 
-                topic_name = f"{row['time1']} x {row['time2']} {row['data']}"
-                game_info = f"Para mais informacoes acesse: {row['link']}"
-                topic = bot.create_forum_topic(chat_id=chat_id, name=topic_name)
-                #salvando thread id para cada topico para posteriormente deletar
-                row['thread_id'] = topic.message_thread_id
-                bot.send_message(chat_id=chat_id, message_thread_id=topic.message_thread_id, text=game_info)
-                #criar log
-                log = f"topico criado: {topic_name}"
-                bot.send_message(chat_id=chat_id,message_thread_id=logs_thread_id,text=log)
-                print(topic_name)
+                    if len(row['data']) == 5: #Tratar jogos que tem apenas o horario
+                        row['data'] = datetime.today().strftime('%d/%m/%Y')
+
+                    topic_name = f"{row['time1']} x {row['time2']} {row['data']}"
+                    game_info = f"Para mais informacoes acesse: {row['link']}"
+                    topic = bot.create_forum_topic(chat_id=chat_id, name=topic_name)
+                    #salvando thread id para cada topico para posteriormente deletar
+                    row['thread_id'] = topic.message_thread_id
+                    bot.send_message(chat_id=chat_id, message_thread_id=topic.message_thread_id, text=game_info)
+                    #criar log
+                    log = f"topico criado: {topic_name}"
+                    bot.send_message(chat_id=chat_id,message_thread_id=logs_thread_id,text=log)
+                    print(topic_name)
             save_jogos(jogos)
         else:
             print("Nenhum Jogo a ser adicionado")
@@ -98,7 +99,7 @@ def criar_topicos(url,chat_id,time_in_seconds):
         #espera 24h para checar dnv
         time.sleep(time_in_seconds)
 
-def check_duplicates(jogos):
+def search_new_games(jogos):
     # aqui eu abro o json e pego os links existentes
     with open('jogos.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -124,43 +125,39 @@ def save_jogos(jogos_novos):
         json.dump(data, file, indent=4, ensure_ascii=False, )
 
 
-def delete_past_games():
-    data_atual = datetime.today().date() #Pegar apenas ano/mes/dia
-    #data_atual = datetime.strptime("10/05/2025",'%d/%m/%Y').date() #MOCK PARA TESTE
 
-    #open json
+def check_active_games(jogos):
     with open('jogos.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
+
+    #se os jogos do data nao estiverem em jogos a partida ja ocorreu
+    links_achados = {j['link'] for j in jogos}
     jogos_ativos = []
     removidos = 0
 
     for row in data['jogos']:
-        data_jogo = datetime.strptime(row['data'],'%d/%m/%Y').date()
-        if data_atual > data_jogo:
-            #deletar topico
-            row_thread_id = row['thread_id']
-            bot.delete_forum_topic(chat_id=settings.chat_id,message_thread_id=row_thread_id)
-            log = f"Thread Deletado {row['time1']} x {row['time2']} {row['data']}"
-            bot.send_message(chat_id=settings.chat_id,message_thread_id=logs_thread_id,text=log)
-            print(log)
-            removidos += 1
-
+        if row['link'] not in links_achados:
+            delete_topic(row)
+            removidos+=1
         else:
-            #remover do data
             jogos_ativos.append(row)
 
-
+    # salva no json
     data['jogos'] = jogos_ativos
-
-    #salva no json
     if data['jogos']:
         with open('jogos.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
 
     if removidos == 0:
-        log = "Nenhum Jogo a ser removido"
-        bot.send_message(chat_id=settings.chat_id,message_thread_id=logs_thread_id,text=log)
         print("Nenhum Jogo a ser removido")
+        bot.send_message(chat_id=settings.chat_id,message_thread_id=logs_thread_id,text="Nenhum Jogo a ser removido")
+
+
+def delete_topic(row):
+    row_thread_id = row['thread_id']
+    bot.delete_forum_topic(chat_id=settings.chat_id, message_thread_id=row_thread_id)
+    log = f"Thread Deletado {row['time1']} x {row['time2']} {row['data']}"
+    bot.send_message(chat_id=settings.chat_id, message_thread_id=logs_thread_id, text=log)
 
 
 
